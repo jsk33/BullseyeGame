@@ -10,10 +10,10 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var alertIsVisible: Bool = false
-    @State var sliderValue: Double = 50.0
-    @State var target: Int = Int.random(in: 1...100)
-    
+    @State var alertIsVisible = false
+    @State var sliderValue = 50.0
+    @State var target = Int.random(in: 1...100)
+        
     var body: some View {
         VStack {
             Spacer()
@@ -21,7 +21,7 @@ struct ContentView: View {
             // Target row
             HStack {
                 Text("Put the bullseye as close as you can to:")
-                Text("\(self.target)")
+                Text("\(target)")
             }
             
             Spacer()
@@ -29,7 +29,7 @@ struct ContentView: View {
             // Slider row
             HStack {
                 Text("1")
-                Slider(value: self.$sliderValue, in: 1...100)
+                Slider(value: $sliderValue, in: 1...100)
                 Text("100")
             }
             
@@ -43,8 +43,7 @@ struct ContentView: View {
                 Text(/*@START_MENU_TOKEN@*/"Hit me!"/*@END_MENU_TOKEN@*/)
             }
             .alert(isPresented: $alertIsVisible) { () -> Alert in
-                var roundedValue: Int = Int(self.sliderValue.rounded())
-                return Alert(title: Text("Hello there!"), message: Text("The slider's value is \(roundedValue)"), dismissButton: .default(Text("awesome")))
+                return Alert(title: Text("Hello there!"), message: Text("The slider's value is \(sliderValueRounded()).\n" + "You scored \(pointsForCurrentRound()) points this round."), dismissButton: .default(Text("awesome")))
             }
             
             Spacer()
@@ -66,6 +65,14 @@ struct ContentView: View {
                 }
             }.padding(.bottom, 20)
         }
+    }
+    
+    func sliderValueRounded() -> Int {
+        return Int(sliderValue.rounded())
+    }
+    
+    func pointsForCurrentRound() -> Int {
+        return 100 - abs(target - sliderValueRounded())
     }
 }
 
