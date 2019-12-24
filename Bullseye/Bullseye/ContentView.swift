@@ -13,6 +13,7 @@ struct ContentView: View {
     @State var alertIsVisible = false
     @State var sliderValue = 50.0
     @State var target = Int.random(in: 1...100)
+    @State var score = 0
         
     var body: some View {
         VStack {
@@ -37,13 +38,20 @@ struct ContentView: View {
             
             // Button row
             Button(action: {
-                print("hello jason")
+                
                 self.alertIsVisible = true
+                
             }) {
                 Text(/*@START_MENU_TOKEN@*/"Hit me!"/*@END_MENU_TOKEN@*/)
             }
             .alert(isPresented: $alertIsVisible) { () -> Alert in
-                return Alert(title: Text("Hello there!"), message: Text("The slider's value is \(sliderValueRounded()).\n" + "You scored \(pointsForCurrentRound()) points this round."), dismissButton: .default(Text("awesome")))
+                return Alert(
+                        title: Text("Hello there!"),
+                        message: Text("The slider's value is \(sliderValueRounded()).\n" + "You scored \(pointsForCurrentRound()) points this round."),
+                        dismissButton: .default(Text("awesome")) {
+                            self.totalPoints()
+                            self.target = Int.random(in: 1...100)
+                            })
             }
             
             Spacer()
@@ -55,7 +63,7 @@ struct ContentView: View {
                 }
                 Spacer()
                 Text("Score:")
-                Text("999999")
+                Text("\(score)")
                 Spacer()
                 Text("Round:")
                 Text("999")
@@ -73,6 +81,10 @@ struct ContentView: View {
     
     func pointsForCurrentRound() -> Int {
         return 100 - abs(target - sliderValueRounded())
+    }
+    
+    func totalPoints() {
+        score += pointsForCurrentRound()
     }
 }
 
