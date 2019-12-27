@@ -60,7 +60,9 @@ struct ContentView: View {
             
             // Score row
             HStack {
-                Button(action: {}) {
+                Button(action: {
+                    self.resetGame()
+                }) {
                     Text("Start over")
                 }
                 Spacer()
@@ -86,15 +88,18 @@ struct ContentView: View {
     }
     
     func pointsForCurrentRound() -> Int {
-        var finalPoints = 100 - difference()
+        let points = 100 - difference()
+        let bonus: Int
         
         if difference() == 0 {
-            finalPoints += 100
+            bonus = 100
         } else if difference() == 1 {
-            finalPoints += 50
+            bonus = 50
+        } else {
+            bonus = 0
         }
         
-        return finalPoints
+        return points + bonus
     }
     
     func totalPoints() {
@@ -115,6 +120,13 @@ struct ContentView: View {
         }
         
         return title
+    }
+    
+    func resetGame() {
+        score = 0
+        round = 1
+        sliderValue = 50.0
+        target = Int.random(in: 1...100)
     }
 }
 
