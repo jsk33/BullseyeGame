@@ -81,8 +81,20 @@ struct ContentView: View {
         return Int(sliderValue.rounded())
     }
     
+    func difference() -> Int {
+        return abs(target - sliderValueRounded())
+    }
+    
     func pointsForCurrentRound() -> Int {
-        return 100 - abs(target - sliderValueRounded())
+        var finalPoints = 100 - difference()
+        
+        if difference() == 0 {
+            finalPoints += 100
+        } else if difference() == 1 {
+            finalPoints += 50
+        }
+        
+        return finalPoints
     }
     
     func totalPoints() {
@@ -90,14 +102,13 @@ struct ContentView: View {
     }
     
     func alertTitle() -> String {
-        let difference = abs(target - sliderValueRounded())
         let title: String
         
-        if difference == 0 {
+        if difference() == 0 {
             title = "Perfect!"
-        } else if difference < 5 {
+        } else if difference() < 5 {
             title = "You almost had it!"
-        } else if difference <= 10 {
+        } else if difference() <= 10 {
             title = "Not bad."
         } else {
             title = "Try harder mate!"
