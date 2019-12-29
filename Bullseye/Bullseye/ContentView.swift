@@ -41,6 +41,22 @@ struct ContentView: View {
         }
     }
     
+    struct ButtonTextLarge: ViewModifier {
+        func body(content: Content) -> some View {
+            return content
+                .foregroundColor(Color.black)
+                .font(Font.custom("Arial Rounded MT Bold", size: 18))
+        }
+    }
+    
+    struct ButtonTextSmall: ViewModifier {
+        func body(content: Content) -> some View {
+            return content
+                .foregroundColor(Color.black)
+                .font(Font.custom("Arial Rounded MT Bold", size: 12))
+        }
+    }
+    
     var body: some View {
         VStack {
             Spacer()
@@ -68,8 +84,8 @@ struct ContentView: View {
                 self.alertIsVisible = true
                 
             }) {
-                Text(/*@START_MENU_TOKEN@*/"Hit me!"/*@END_MENU_TOKEN@*/)
-            }
+                Text(/*@START_MENU_TOKEN@*/"Hit me!"/*@END_MENU_TOKEN@*/).modifier(ButtonTextLarge())
+                }
             .alert(isPresented: $alertIsVisible) { () -> Alert in
                 return Alert(
                         title: Text(alertTitle()),
@@ -79,7 +95,7 @@ struct ContentView: View {
                             self.target = Int.random(in: 1...100)
                             self.round += 1
                             })
-            }
+                }.background(Image("Button")).modifier(ShadowStyle())
             
             Spacer()
             
@@ -88,8 +104,8 @@ struct ContentView: View {
                 Button(action: {
                     self.resetGame()
                 }) {
-                    Text("Start over")
-                }
+                    Text("Start over").modifier(ButtonTextSmall())
+                }.background(Image("Button")).modifier(ShadowStyle())
                 Spacer()
                 Text("Score:").modifier(LabelStyle())
                 Text("\(score)").modifier(ValueStyle())
@@ -98,8 +114,8 @@ struct ContentView: View {
                 Text("\(round)").modifier(ValueStyle())
                 Spacer()
                 Button(action: {}) {
-                    Text("Info")
-                }
+                    Text("Info").modifier(ButtonTextSmall())
+                }.background(Image("Button")).modifier(ShadowStyle())
             }.padding(.bottom, 20)
         }.background(Image("Background"), alignment: .center)
     }
